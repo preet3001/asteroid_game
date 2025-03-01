@@ -7,17 +7,33 @@ class GameOverDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Game Over'),
-      content: const Text('You collided with an enemy!'),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            onTryAgain.call();
-          },
-          child: const Text('Try Again'),
-        ),
-      ],
+      backgroundColor: Colors.transparent,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text(
+            'GAME OVER',
+            style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(height: 20),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size.fromHeight(52),
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+              onTryAgain.call();
+            },
+            child: const Text('Try Again'),
+          ),
+        ],
+      ),
     );
   }
 }
