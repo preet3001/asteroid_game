@@ -11,6 +11,9 @@ class UpdatePositionUseCase {
     }
 
     Offset movement = (direction / direction.distance) * speed;
-    return player.copyWith(position: player.position + movement);
+    return player.copyWith(
+      position: player.position + movement,
+      velocity: movement,
+    );
   }
 }

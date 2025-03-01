@@ -59,6 +59,7 @@ class _AsteroidGameScreenState extends State<AsteroidGameScreen> {
                   painter: GamePainter(
                     enemies: widget.viewModel.enemies,
                     player: widget.viewModel.player,
+                    cursorPosition: widget.viewModel.cursorPosition,
                   ),
                   child: Container(),
                 ),

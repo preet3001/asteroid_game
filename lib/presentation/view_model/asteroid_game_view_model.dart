@@ -27,7 +27,11 @@ class AsteroidGameViewModel extends ChangeNotifier {
   int gameDurationSeconds = 0;
   Offset cursorPosition = Offset(200, 200);
 
-  Player player = Player(position: Offset(200, 200), size: 10);
+  Player player = Player(
+    position: Offset(200, 200),
+    size: 10,
+    velocity: Offset(200, 200),
+  );
   void onHover(Offset newOffset) {
     cursorPosition = newOffset;
   }
