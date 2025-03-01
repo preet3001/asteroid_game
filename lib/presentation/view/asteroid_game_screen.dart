@@ -1,5 +1,4 @@
-import 'package:astroid_game/presentation/view/widgets/enemy_painter.dart';
-import 'package:astroid_game/presentation/view/widgets/player_painter.dart';
+import 'package:astroid_game/presentation/view/widgets/game_painter.dart';
 import 'package:flutter/material.dart';
 import '../view_model/asteroid_game_view_model.dart';
 
@@ -30,10 +29,10 @@ class _AsteroidGameScreenState extends State<AsteroidGameScreen> {
           builder: (context, _) {
             return CustomPaint(
               key: const Key("player_painter"),
-              foregroundPainter: PlayerPainter(
-                widget.viewModel.player.position,
+              painter: GamePainter(
+                enemies: widget.viewModel.enemies,
+                playerPosition: widget.viewModel.player.position,
               ),
-              painter: EnemyPainter(widget.viewModel.enemies),
               child: Container(),
             );
           },
