@@ -39,19 +39,21 @@ class GamePainter extends CustomPainter {
   }
 
   void _drawEnemy(Canvas canvas) {
-    final enemyPaint =
+    final Paint paint =
         Paint()
           ..color = Colors.red
-          ..style = PaintingStyle.fill;
+          ..style = PaintingStyle.fill
+          ..strokeWidth = 2;
 
     for (var enemy in enemies) {
-      canvas.drawCircle(
-        enemy.position,
-        enemy.size,
-        enemyPaint,
-      ); // Draw each enemy
+      canvas.save();
+      canvas.translate(enemy.position.dx, enemy.position.dy);
+      canvas.drawPath(enemy.shape, paint);
+      canvas.restore();
     }
   }
+
+  /// Generates a random convex polygon
 
   void _drawPlayer(Canvas canvas, Offset position, Offset velocity) {
     // Avoid division by zero when not moving
