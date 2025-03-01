@@ -4,6 +4,10 @@ Simple Asteroid Game made without flutter_flame and implements features like col
 
 ## Getting Started
 
+https://github.com/user-attachments/assets/45a2d182-6173-44e6-8ecc-69d0b512fdf0
+
+
+
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
