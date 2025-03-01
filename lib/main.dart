@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.black,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
       ),
-      home: BallGameScreen(
+      home: AsteroidGameScreen(
         viewModel: BallGameViewModel(UpdatePositionUseCase()),
       ),
     );

@@ -2,15 +2,15 @@ import 'package:astroid_game/presentation/view/widgets/player_painter.dart';
 import 'package:flutter/material.dart';
 import '../view_model/asteroid_game_view_model.dart';
 
-class BallGameScreen extends StatefulWidget {
-  const BallGameScreen({super.key, required this.viewModel});
+class AsteroidGameScreen extends StatefulWidget {
+  const AsteroidGameScreen({super.key, required this.viewModel});
   final BallGameViewModel viewModel;
 
   @override
-  State<BallGameScreen> createState() => _BallGameScreenState();
+  State<AsteroidGameScreen> createState() => _AsteroidGameScreenState();
 }
 
-class _BallGameScreenState extends State<BallGameScreen> {
+class _AsteroidGameScreenState extends State<AsteroidGameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +20,7 @@ class _BallGameScreenState extends State<BallGameScreen> {
           listenable: widget.viewModel,
           builder: (context, _) {
             return CustomPaint(
+              key: const Key("player_painter"),
               painter: PlayerPainter(widget.viewModel.ball.position),
               child: Container(),
             );
