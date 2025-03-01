@@ -1,18 +1,19 @@
 import 'package:astroid_game/domain/entities/enemy.dart';
+import 'package:astroid_game/domain/entities/player.dart';
 import 'package:flutter/material.dart';
 
 class GamePainter extends CustomPainter {
-  GamePainter({required this.enemies, required this.playerPosition});
+  GamePainter({required this.enemies, required this.player});
   final List<Enemy> enemies;
 
-  final Offset playerPosition;
+  final Player player;
   @override
   void paint(Canvas canvas, Size size) {
     final Paint paint =
         Paint()
           ..color = Colors.white
           ..style = PaintingStyle.fill;
-    canvas.drawCircle(playerPosition, 10, paint);
+    canvas.drawCircle(player.position, player.size, paint);
 
     final enemyPaint =
         Paint()
@@ -30,7 +31,6 @@ class GamePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(GamePainter oldDelegate) {
-    return oldDelegate.playerPosition != playerPosition ||
-        oldDelegate.enemies != enemies;
+    return oldDelegate.player != player || oldDelegate.enemies != enemies;
   }
 }

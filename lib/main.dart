@@ -1,3 +1,4 @@
+import 'package:astroid_game/domain/usecases/check_collision.dart';
 import 'package:astroid_game/domain/usecases/move_enemies.dart';
 import 'package:astroid_game/domain/usecases/spawn_enemies.dart';
 import 'package:astroid_game/domain/usecases/update_position.dart';
@@ -22,10 +23,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
       ),
       home: AsteroidGameScreen(
-        viewModel: BallGameViewModel(
+        viewModel: AsteroidGameViewModel(
           updatePositionUseCase: UpdatePositionUseCase(),
           spawnEnemiesUseCase: SpawnEnemiesUseCase(),
           moveEnemiesUseCase: MoveEnemiesUseCase(),
+          checkCollisionUseCase: CheckCollisionUseCase(),
         ),
       ),
     );

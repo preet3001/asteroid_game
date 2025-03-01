@@ -6,7 +6,7 @@ void main() {
   group('Update Position Use Case', () {
     test('should return a new Ball with updated position', () {
       final useCase = UpdatePositionUseCase();
-      final Player ball = Player(position: Offset(100, 100));
+      final Player ball = Player(position: Offset(100, 100), size: 10);
       final newPosition = Offset(200, 200);
       final updatedBall = useCase(ball, newPosition);
       expect(updatedBall.position, newPosition);
