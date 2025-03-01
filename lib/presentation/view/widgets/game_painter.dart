@@ -18,7 +18,7 @@ class GamePainter extends CustomPainter {
   final List<Bullet> bullets;
   @override
   void paint(Canvas canvas, Size size) {
-    _drawPlayer(canvas, player.position, cursorPosition);
+    _drawPlayer(canvas, player.position, player.velocity);
     _drawBullet(canvas);
     _drawEnemy(canvas);
   }
@@ -54,21 +54,24 @@ class GamePainter extends CustomPainter {
   }
 
   void _drawPlayer(Canvas canvas, Offset position, Offset velocity) {
-    double angle = atan2(velocity.dy, velocity.dx); // Rotation angle
+    // Avoid division by zero when not moving
+    double angle =
+        velocity == Offset.zero ? 0 : atan2(velocity.dy, velocity.dx);
 
-    Path cursor = Path();
     double size = player.size;
+    Path cursor = Path();
 
-    // Define a more spaceship-like cursor
-    cursor.moveTo(0, -size); // Tip of the triangle
-    cursor.lineTo(size * 0.6, size); // Bottom right
-    cursor.lineTo(0, size * 0.6); // Inner back
-    cursor.lineTo(-size * 0.6, size); // Bottom left
+    // Define a spaceship-like shape
+    cursor.moveTo(0, -size); // Tip of the spaceship
+    cursor.lineTo(size * 0.6, size * 0.6); // Bottom right
+    cursor.lineTo(0, size * 0.3); // Inner back
+    cursor.lineTo(-size * 0.6, size * 0.6); // Bottom left
     cursor.close();
 
+    // Move the canvas to the player position
     canvas.save();
     canvas.translate(position.dx, position.dy);
-    canvas.rotate(angle); // Rotate towards movement direction
+    canvas.rotate(angle + pi / 2); // Rotate and align tip correctly
     canvas.drawPath(
       cursor,
       Paint()
