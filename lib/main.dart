@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
           checkCollisionUseCase: PlayerEnemyCollisionUseCase(),
           shootBulletUsecase: ShootBulletUsecase(),
           moveBulletsUsecase: MoveBulletsUsecase(),
-          bulletEnemyCollisionUsecase: BulletEnemyCollisionUsecase(),
+          bulletEnemyCollisionUsecase: BulletEnemyCollisionUseCase(),
         ),
       ),
     );

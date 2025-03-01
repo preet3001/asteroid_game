@@ -28,7 +28,7 @@ class AsteroidGameViewModel extends ChangeNotifier {
   final PlayerEnemyCollisionUseCase checkCollisionUseCase;
   final ShootBulletUsecase shootBulletUsecase;
   final MoveBulletsUsecase moveBulletsUsecase;
-  final BulletEnemyCollisionUsecase bulletEnemyCollisionUsecase;
+  final BulletEnemyCollisionUseCase bulletEnemyCollisionUsecase;
 
   bool _gameOver = false;
   Timer? _gameLoopTimer;
@@ -80,7 +80,7 @@ class AsteroidGameViewModel extends ChangeNotifier {
       }
       player = updatePositionUseCase(player, cursorPosition, 3.0);
       enemies = moveEnemiesUseCase(enemies);
-      enemies = bulletEnemyCollisionUsecase(bullets: bullets, enemies: enemies);
+      enemies = bulletEnemyCollisionUsecase(bullets, enemies);
       bullets = moveBulletsUsecase(bullets);
       bullets.removeWhere((e) => _isOffScreen(e.position, size));
       enemies.removeWhere((e) => _isOffScreen(e.position, size));
