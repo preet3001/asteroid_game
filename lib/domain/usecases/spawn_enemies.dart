@@ -5,19 +5,44 @@ import 'package:flutter/widgets.dart';
 
 class SpawnEnemiesUseCase {
   final _random = Random();
-  List<Enemy> call(int count, Size screenSize) {
-    return List.generate(count, (_) {
-      return Enemy(
-        position: Offset(
-          _random.nextDouble() * screenSize.width,
-          _random.nextDouble() * screenSize.height,
-        ),
-        velocity: Offset(
-          (_random.nextDouble() - 0.5) * 4, //random speed between -2 and 2
-          (_random.nextDouble() - 0.5) * 4,
-        ),
-        size: _random.nextDouble() * 20 + 10, // Random size between 10 and 30
-      );
-    });
+  Enemy call(Size screenSize) {
+    double x, y;
+
+    // Randomly choose an edge (0: top, 1: bottom, 2: left, 3: right)
+    int edge = _random.nextInt(4);
+
+    switch (edge) {
+      case 0: // Top edge
+        x = _random.nextDouble() * screenSize.width;
+        y = 0;
+        break;
+      case 1: // Bottom edge
+        x = _random.nextDouble() * screenSize.width;
+        y = screenSize.height;
+        break;
+      case 2: // Left edge
+        x = 0;
+        y = _random.nextDouble() * screenSize.height;
+        break;
+      case 3: // Right edge
+        x = screenSize.width;
+        y = _random.nextDouble() * screenSize.height;
+        break;
+      default:
+        x = 0;
+        y = 0;
+    }
+    Offset spawnPosition = Offset(x, y);
+    Offset center = Offset(screenSize.width / 2, screenSize.height / 2);
+    Offset direction = center - spawnPosition;
+
+    // Normalize the direction vector
+    double distance = direction.distance;
+    Offset velocity = distance > 0 ? (direction / distance) * 2 : Offset.zero;
+    return Enemy(
+      position: spawnPosition,
+      size: _random.nextDouble() * 30 + 10, // Variable size (10-40)
+      velocity: velocity, // Moves toward the center
+    );
   }
 }

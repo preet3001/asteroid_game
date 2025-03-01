@@ -21,7 +21,10 @@ class AsteroidGameViewModel extends ChangeNotifier {
   final CheckCollisionUseCase checkCollisionUseCase;
 
   bool _gameOver = false;
-  Timer? _timer;
+  Timer? _gameLoopTimer;
+  Timer? _enemySpawnTimer;
+  Timer? _gameDurationTimer;
+  int gameDurationSeconds = 0;
   Offset cursorPosition = Offset(200, 200);
 
   Player player = Player(position: Offset(200, 200), size: 10);
@@ -32,15 +35,30 @@ class AsteroidGameViewModel extends ChangeNotifier {
   List<Enemy> enemies = [];
 
   void startGameLoop({
-    required int count,
     required Size size,
     required void Function() onGameOver,
   }) {
-    enemies = spawnEnemiesUseCase(count, size);
     _gameOver = false;
-    notifyListeners();
+    gameDurationSeconds = 0;
+    enemies = [];
+    _gameDurationTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (_gameOver) {
+        timer.cancel();
+        return;
+      }
+      gameDurationSeconds++;
+      notifyListeners();
+    });
+    _enemySpawnTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (_gameOver) {
+        timer.cancel();
+        return;
+      }
+      enemies.add(spawnEnemiesUseCase(size));
+      notifyListeners();
+    });
     // setting duration as 16ms so that game could run on 60 fps
-    _timer = Timer.periodic(const Duration(milliseconds: 16), (timer) {
+    _gameLoopTimer = Timer.periodic(const Duration(milliseconds: 16), (timer) {
       if (_gameOver) {
         timer.cancel();
         return;
@@ -58,7 +76,9 @@ class AsteroidGameViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
-    _timer?.cancel();
+    _gameLoopTimer?.cancel();
+    _enemySpawnTimer?.cancel();
+    _gameDurationTimer?.cancel();
     super.dispose();
   }
 }

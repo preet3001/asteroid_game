@@ -22,7 +22,6 @@ class _AsteroidGameScreenState extends State<AsteroidGameScreen> {
 
   void startGame() {
     widget.viewModel.startGameLoop(
-      count: 10,
       size: MediaQuery.sizeOf(context),
       onGameOver: onGameOver,
     );
@@ -31,8 +30,18 @@ class _AsteroidGameScreenState extends State<AsteroidGameScreen> {
   void onGameOver() {
     showDialog(
       context: context,
-      builder: (context) => GameOverDialog(onTryAgain: () => startGame()),
+      builder:
+          (context) => GameOverDialog(
+            onTryAgain: () => startGame(),
+            duration: widget.viewModel.gameDurationSeconds,
+          ),
     );
+  }
+
+  String _formatTime(int totalSeconds) {
+    int minutes = totalSeconds ~/ 60;
+    int seconds = totalSeconds % 60;
+    return '$minutes:${seconds.toString().padLeft(2, '0')}';
   }
 
   @override
@@ -43,13 +52,29 @@ class _AsteroidGameScreenState extends State<AsteroidGameScreen> {
         child: ListenableBuilder(
           listenable: widget.viewModel,
           builder: (context, _) {
-            return CustomPaint(
-              key: const Key("player_painter"),
-              painter: GamePainter(
-                enemies: widget.viewModel.enemies,
-                player: widget.viewModel.player,
-              ),
-              child: Container(),
+            return Stack(
+              children: [
+                CustomPaint(
+                  key: const Key("player_painter"),
+                  painter: GamePainter(
+                    enemies: widget.viewModel.enemies,
+                    player: widget.viewModel.player,
+                  ),
+                  child: Container(),
+                ),
+                Positioned(
+                  top: 40,
+                  left: 20,
+                  child: Text(
+                    "Timer: ${_formatTime(widget.viewModel.gameDurationSeconds)}",
+                    style: const TextStyle(
+                      fontSize: 24,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
             );
           },
         ),
