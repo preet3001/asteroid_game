@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:astroid_game/domain/usecases/bullet_enemy_collision_usecase.dart';
-import 'package:astroid_game/domain/usecases/check_collision_usecase.dart';
+import 'package:astroid_game/domain/usecases/player_enemy_collision_usecase.dart';
 import 'package:astroid_game/domain/usecases/move_bullets_usecase.dart';
 import 'package:astroid_game/domain/usecases/move_enemies_usecase.dart';
 import 'package:astroid_game/domain/usecases/shoot_bullet_usecase.dart';
