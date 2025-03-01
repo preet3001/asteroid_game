@@ -1,3 +1,4 @@
+import 'package:astroid_game/presentation/view/widgets/enemy_painter.dart';
 import 'package:astroid_game/presentation/view/widgets/player_painter.dart';
 import 'package:flutter/material.dart';
 import '../view_model/asteroid_game_view_model.dart';
@@ -12,6 +13,14 @@ class AsteroidGameScreen extends StatefulWidget {
 
 class _AsteroidGameScreenState extends State<AsteroidGameScreen> {
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.viewModel.spawnAndMoveEnemies(10, MediaQuery.sizeOf(context));
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: MouseRegion(
@@ -21,7 +30,10 @@ class _AsteroidGameScreenState extends State<AsteroidGameScreen> {
           builder: (context, _) {
             return CustomPaint(
               key: const Key("player_painter"),
-              painter: PlayerPainter(widget.viewModel.ball.position),
+              foregroundPainter: PlayerPainter(
+                widget.viewModel.player.position,
+              ),
+              painter: EnemyPainter(widget.viewModel.enemies),
               child: Container(),
             );
           },

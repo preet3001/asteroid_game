@@ -1,9 +1,9 @@
 import 'dart:ui';
 
-import '../entities/ball.dart';
+import '../entities/player.dart';
 
 class UpdatePositionUseCase {
-  Ball call(Ball ball, Offset newPostion) {
+  Player call(Player ball, Offset newPostion) {
     return ball.copyWith(position: newPostion);
   }
 }

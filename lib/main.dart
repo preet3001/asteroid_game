@@ -1,3 +1,5 @@
+import 'package:astroid_game/domain/usecases/move_enemies.dart';
+import 'package:astroid_game/domain/usecases/spawn_enemies.dart';
 import 'package:astroid_game/domain/usecases/update_position.dart';
 import 'package:astroid_game/presentation/view_model/asteroid_game_view_model.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +22,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
       ),
       home: AsteroidGameScreen(
-        viewModel: BallGameViewModel(UpdatePositionUseCase()),
+        viewModel: BallGameViewModel(
+          updatePositionUseCase: UpdatePositionUseCase(),
+          spawnEnemiesUseCase: SpawnEnemiesUseCase(),
+          moveEnemiesUseCase: MoveEnemiesUseCase(),
+        ),
       ),
     );
   }

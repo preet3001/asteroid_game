@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:astroid_game/domain/usecases/move_enemies.dart';
+import 'package:astroid_game/domain/usecases/spawn_enemies.dart';
 import 'package:astroid_game/domain/usecases/update_position.dart';
 import 'package:astroid_game/presentation/view/asteroid_game_screen.dart';
 import 'package:astroid_game/presentation/view_model/asteroid_game_view_model.dart';
@@ -13,7 +15,11 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: AsteroidGameScreen(
-          viewModel: BallGameViewModel(UpdatePositionUseCase()),
+          viewModel: BallGameViewModel(
+            updatePositionUseCase: UpdatePositionUseCase(),
+            spawnEnemiesUseCase: SpawnEnemiesUseCase(),
+            moveEnemiesUseCase: MoveEnemiesUseCase(),
+          ),
         ),
       ),
     );
