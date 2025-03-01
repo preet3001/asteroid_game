@@ -22,11 +22,11 @@ class AsteroidGameViewModel extends ChangeNotifier {
 
   bool _gameOver = false;
   Timer? _timer;
+  Offset cursorPosition = Offset(200, 200);
 
   Player player = Player(position: Offset(200, 200), size: 10);
   void onHover(Offset newOffset) {
-    player = updatePositionUseCase(player, newOffset);
-    notifyListeners();
+    cursorPosition = newOffset;
   }
 
   List<Enemy> enemies = [];
@@ -39,11 +39,14 @@ class AsteroidGameViewModel extends ChangeNotifier {
     enemies = spawnEnemiesUseCase(count, size);
     _gameOver = false;
     notifyListeners();
-    _timer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
+    // setting duration as 16ms so that game could run on 60 fps
+    _timer = Timer.periodic(const Duration(milliseconds: 16), (timer) {
       if (_gameOver) {
         timer.cancel();
         return;
       }
+      player = updatePositionUseCase(player, cursorPosition, 3.0);
+      notifyListeners();
       enemies = moveEnemiesUseCase(enemies);
       if (checkCollisionUseCase(player, enemies)) {
         _gameOver = true;
