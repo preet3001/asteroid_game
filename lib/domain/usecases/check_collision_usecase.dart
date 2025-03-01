@@ -1,7 +1,7 @@
 import 'package:astroid_game/domain/entities/enemy.dart';
 import 'package:astroid_game/domain/entities/player.dart';
 
-class CheckCollisionUseCase {
+class PlayerEnemyCollisionUseCase {
   bool call(Player player, List<Enemy> enemies) {
     for (var enemy in enemies) {
       double distance = (player.position - enemy.position).distance;

@@ -1,5 +1,5 @@
 import 'package:astroid_game/domain/entities/player.dart';
-import 'package:astroid_game/domain/usecases/update_position.dart';
+import 'package:astroid_game/domain/usecases/update_position_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

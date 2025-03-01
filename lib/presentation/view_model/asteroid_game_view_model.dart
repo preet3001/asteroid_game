@@ -1,12 +1,16 @@
 import 'dart:async';
 
+import 'package:astroid_game/domain/entities/bullet.dart';
 import 'package:astroid_game/domain/entities/enemy.dart';
-import 'package:astroid_game/domain/usecases/check_collision.dart';
-import 'package:astroid_game/domain/usecases/move_enemies.dart';
-import 'package:astroid_game/domain/usecases/spawn_enemies.dart';
+import 'package:astroid_game/domain/usecases/bullet_enemy_collision_usecase.dart';
+import 'package:astroid_game/domain/usecases/check_collision_usecase.dart';
+import 'package:astroid_game/domain/usecases/move_bullets_usecase.dart';
+import 'package:astroid_game/domain/usecases/move_enemies_usecase.dart';
+import 'package:astroid_game/domain/usecases/shoot_bullet_usecase.dart';
+import 'package:astroid_game/domain/usecases/spawn_enemies_usecase.dart';
 import 'package:flutter/material.dart';
 import '../../domain/entities/player.dart';
-import '../../domain/usecases/update_position.dart';
+import '../../domain/usecases/update_position_usecase.dart';
 
 class AsteroidGameViewModel extends ChangeNotifier {
   AsteroidGameViewModel({
@@ -14,11 +18,17 @@ class AsteroidGameViewModel extends ChangeNotifier {
     required this.spawnEnemiesUseCase,
     required this.moveEnemiesUseCase,
     required this.checkCollisionUseCase,
+    required this.shootBulletUsecase,
+    required this.moveBulletsUsecase,
+    required this.bulletEnemyCollisionUsecase,
   });
   final UpdatePositionUseCase updatePositionUseCase;
   final MoveEnemiesUseCase moveEnemiesUseCase;
   final SpawnEnemiesUseCase spawnEnemiesUseCase;
-  final CheckCollisionUseCase checkCollisionUseCase;
+  final PlayerEnemyCollisionUseCase checkCollisionUseCase;
+  final ShootBulletUsecase shootBulletUsecase;
+  final MoveBulletsUsecase moveBulletsUsecase;
+  final BulletEnemyCollisionUsecase bulletEnemyCollisionUsecase;
 
   bool _gameOver = false;
   Timer? _gameLoopTimer;
@@ -38,6 +48,8 @@ class AsteroidGameViewModel extends ChangeNotifier {
 
   List<Enemy> enemies = [];
 
+  List<Bullet> bullets = [];
+
   void startGameLoop({
     required Size size,
     required void Function() onGameOver,
@@ -45,13 +57,13 @@ class AsteroidGameViewModel extends ChangeNotifier {
     _gameOver = false;
     gameDurationSeconds = 0;
     enemies = [];
+    bullets = [];
     _gameDurationTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (_gameOver) {
         timer.cancel();
         return;
       }
       gameDurationSeconds++;
-      notifyListeners();
     });
     _enemySpawnTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (_gameOver) {
@@ -59,7 +71,6 @@ class AsteroidGameViewModel extends ChangeNotifier {
         return;
       }
       enemies.add(spawnEnemiesUseCase(size));
-      notifyListeners();
     });
     // setting duration as 16ms so that game could run on 60 fps
     _gameLoopTimer = Timer.periodic(const Duration(milliseconds: 16), (timer) {
@@ -68,14 +79,31 @@ class AsteroidGameViewModel extends ChangeNotifier {
         return;
       }
       player = updatePositionUseCase(player, cursorPosition, 3.0);
-      notifyListeners();
       enemies = moveEnemiesUseCase(enemies);
+      enemies = bulletEnemyCollisionUsecase(bullets: bullets, enemies: enemies);
+      bullets = moveBulletsUsecase(bullets);
+      bullets.removeWhere((e) => _isOffScreen(e.position, size));
+      enemies.removeWhere((e) => _isOffScreen(e.position, size));
       if (checkCollisionUseCase(player, enemies)) {
         _gameOver = true;
         onGameOver.call();
       }
       notifyListeners();
     });
+  }
+
+  bool _isOffScreen(Offset position, Size screenSize) {
+    return position.dx < 0 ||
+        position.dx > screenSize.width ||
+        position.dy < 0 ||
+        position.dy > screenSize.height;
+  }
+
+  void shootBullets() {
+    bullets.add(
+      shootBulletUsecase(position: player.position, direction: player.velocity),
+    );
+    notifyListeners();
   }
 
   @override

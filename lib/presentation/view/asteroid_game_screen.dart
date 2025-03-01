@@ -30,6 +30,7 @@ class _AsteroidGameScreenState extends State<AsteroidGameScreen> {
   void onGameOver() {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder:
           (context) => GameOverDialog(
             onTryAgain: () => startGame(),
@@ -47,37 +48,41 @@ class _AsteroidGameScreenState extends State<AsteroidGameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: MouseRegion(
-        onHover: (event) => widget.viewModel.onHover(event.localPosition),
-        child: ListenableBuilder(
-          listenable: widget.viewModel,
-          builder: (context, _) {
-            return Stack(
-              children: [
-                CustomPaint(
-                  key: const Key("player_painter"),
-                  painter: GamePainter(
-                    enemies: widget.viewModel.enemies,
-                    player: widget.viewModel.player,
-                    cursorPosition: widget.viewModel.cursorPosition,
+      body: GestureDetector(
+        onTap: () => widget.viewModel.shootBullets(),
+        child: MouseRegion(
+          onHover: (event) => widget.viewModel.onHover(event.localPosition),
+          child: ListenableBuilder(
+            listenable: widget.viewModel,
+            builder: (context, _) {
+              return Stack(
+                children: [
+                  CustomPaint(
+                    key: const Key("player_painter"),
+                    painter: GamePainter(
+                      enemies: widget.viewModel.enemies,
+                      player: widget.viewModel.player,
+                      cursorPosition: widget.viewModel.cursorPosition,
+                      bullets: widget.viewModel.bullets,
+                    ),
+                    child: Container(),
                   ),
-                  child: Container(),
-                ),
-                Positioned(
-                  top: 40,
-                  left: 20,
-                  child: Text(
-                    "Timer: ${_formatTime(widget.viewModel.gameDurationSeconds)}",
-                    style: const TextStyle(
-                      fontSize: 24,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                  Positioned(
+                    top: 40,
+                    left: 20,
+                    child: Text(
+                      "Timer: ${_formatTime(widget.viewModel.gameDurationSeconds)}",
+                      style: const TextStyle(
+                        fontSize: 24,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            );
-          },
+                ],
+              );
+            },
+          ),
         ),
       ),
     );

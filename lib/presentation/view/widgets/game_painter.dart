@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:astroid_game/domain/entities/bullet.dart';
 import 'package:astroid_game/domain/entities/enemy.dart';
 import 'package:astroid_game/domain/entities/player.dart';
 import 'package:flutter/material.dart';
@@ -9,19 +10,35 @@ class GamePainter extends CustomPainter {
     required this.enemies,
     required this.player,
     required this.cursorPosition,
+    required this.bullets,
   });
   final List<Enemy> enemies;
   final Player player;
   final Offset cursorPosition;
+  final List<Bullet> bullets;
   @override
   void paint(Canvas canvas, Size size) {
-    // final Paint paint =
-    //     Paint()
-    //       ..color = Colors.white
-    //       ..style = PaintingStyle.fill;
-    // canvas.drawCircle(player.position, player.size, paint);
-    _drawPlayer(canvas, player.position, player.velocity);
+    _drawPlayer(canvas, player.position, cursorPosition);
+    _drawBullet(canvas);
+    _drawEnemy(canvas);
+  }
 
+  void _drawBullet(Canvas canvas) {
+    final bulletPaint =
+        Paint()
+          ..color = Colors.white
+          ..style = PaintingStyle.fill;
+
+    for (var bullet in bullets) {
+      canvas.drawCircle(
+        bullet.position,
+        bullet.size,
+        bulletPaint,
+      ); // Draw each enemy
+    }
+  }
+
+  void _drawEnemy(Canvas canvas) {
     final enemyPaint =
         Paint()
           ..color = Colors.red
