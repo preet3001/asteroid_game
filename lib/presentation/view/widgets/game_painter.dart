@@ -12,7 +12,7 @@ class GamePainter extends CustomPainter {
         Paint()
           ..color = Colors.white
           ..style = PaintingStyle.fill;
-    canvas.drawCircle(playerPosition, 20, paint);
+    canvas.drawCircle(playerPosition, 10, paint);
 
     final enemyPaint =
         Paint()
@@ -20,7 +20,11 @@ class GamePainter extends CustomPainter {
           ..style = PaintingStyle.fill;
 
     for (var enemy in enemies) {
-      canvas.drawCircle(enemy.position, 10, enemyPaint); // Draw each enemy
+      canvas.drawCircle(
+        enemy.position,
+        enemy.size,
+        enemyPaint,
+      ); // Draw each enemy
     }
   }
 

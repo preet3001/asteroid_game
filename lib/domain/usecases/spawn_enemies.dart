@@ -16,6 +16,7 @@ class SpawnEnemiesUseCase {
           (_random.nextDouble() - 0.5) * 4, //random speed between -2 and 2
           (_random.nextDouble() - 0.5) * 4,
         ),
+        size: _random.nextDouble() * 20 + 10, // Random size between 10 and 30
       );
     });
   }
